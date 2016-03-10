@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#525252"
+    tools:context=".Notice">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/screen_border"
+        android:id="@+id/container">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:id="@+id/containerNotice">
+
+            <TextView android:text="Antes de Continuar"
+                android:id="@+id/txtTitleNotice"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:textColor="@color/purple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
+            <TextView android:text="Estamos com você nesta! Certifique-se dos pontos abaixo, são muito importantes:• Você pode procurar o nome do estabelecimento no Google. Diversas vezes encontramos informações valiosas por lá e elas podem te ajudar neste processo.• Caso você reconheça a compra, é muito importante pra nós que entre em contato com o estabelecimento e certifique-se que a situação já não foi resolvida."
+                android:id="@+id/txtNotice"
+                android:textSize="17sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/txtTitleNotice" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/containerButtons"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btnPrimary"
+                android:text="continuar"
+                android:textColor="@color/purple"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/grey_border_top"
+                />
+
+            <Button
+                android:id="@+id/btnSecondary"
+                android:text="Fechar"
+                android:textColor="@color/close_gray"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/btnPrimary"
+                android:background="@drawable/grey_border_top"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
