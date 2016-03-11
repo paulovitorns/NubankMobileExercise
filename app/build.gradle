@@ -46,11 +46,7 @@ android {
 
     productFlavors {
         Desenvolvimento {
-            buildConfigField "String", "REST_BASE_API", "\"https://nu-mobile-hiring.herokuapp.com/\""
-            buildConfigField "String", "REST_BASE_API_NOTICE", "\"https://nu-mobile-hiring.herokuapp.com/notice\""
-            buildConfigField "String", "REST_BASE_API_CHARGEBACK", "\"https://nu-mobile-hiring.herokuapp.com/chargeback\""
-            buildConfigField "String", "REST_BASE_API_CARD_BLOCK", "\"https://nu-mobile-hiring.herokuapp.com/card_block\""
-            buildConfigField "String", "REST_BASE_API_CARD_UNBLOCK", "\"https://nu-mobile-hiring.herokuapp.com/card_unblock\""
+            buildConfigField "String", "REST_BASE_API", "\"https://nu-mobile-hiring.herokuapp.com\""
             applicationId "br.com.nubankmobileexercise"
             versionName '1.0-DEV'
             manifestPlaceholders = [applicationLabel: "NubankMobileExercise-DEV"]
