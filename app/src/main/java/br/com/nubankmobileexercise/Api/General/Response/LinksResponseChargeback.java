@@ -7,14 +7,37 @@ import com.google.gson.annotations.SerializedName;
  */
 public class LinksResponseChargeback {
 
-    @SerializedName("links")
-    private LinkChargeback links;
+    @SerializedName("block_card")
+    private Link blockcard;
 
-    public LinkChargeback getLinks() {
-        return links;
+    @SerializedName("unblock_card")
+    private Link unblockcard;
+
+    @SerializedName("self")
+    private Link self;
+
+    public Link getBlockcard() {
+        return blockcard;
     }
 
-    public void setLinks(LinkChargeback links) {
-        this.links = links;
+    public void setBlockcard(Link blockcard) {
+        this.blockcard = blockcard;
     }
+
+    public Link getUnblockcard() {
+        return unblockcard;
+    }
+
+    public void setUnblockcard(Link unblockcard) {
+        this.unblockcard = unblockcard;
+    }
+
+    public Link getSelf() {
+        return self;
+    }
+
+    public void setSelf(Link self) {
+        this.self = self;
+    }
+
 }

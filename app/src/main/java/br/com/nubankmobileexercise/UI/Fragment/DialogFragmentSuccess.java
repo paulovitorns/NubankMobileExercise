@@ -34,6 +34,7 @@ public class DialogFragmentSuccess extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
+                getActivity().finish();
             }
         });
 

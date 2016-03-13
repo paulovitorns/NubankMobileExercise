@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="345dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp"
-        android:background="@drawable/screen_border"
+        android:layout_margin="6dp"
+        android:background="@drawable/border_radius_white"
         android:id="@+id/container">
 
         <RelativeLayout

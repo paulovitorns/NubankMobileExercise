@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray"
+    tools:context=".Chargeback">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/border_radius_white"
+        android:id="@+id/container">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:id="@+id/containerTitle">
+
+            <TextView android:text="NÃO RECONHEÇO ESTA COMPRA"
+                android:id="@+id/txtTitle"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_marginBottom="28dp"
+            android:layout_below="@+id/containerTitle"
+            android:background="@drawable/grey_border_top"
+            android:id="@+id/containerStatus">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="68dp"
+                android:src="@drawable/ic_chargeback_unlock"
+                android:id="@+id/icoStatus"
+                />
+
+            <TextView android:text="Cartão desbloqueado, recomendamos mantê-lo bloqueado."
+                android:id="@+id/txtStatus"
+                android:textSize="14sp"
+                android:textColor="@color/red"
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:gravity="center_vertical"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/icoStatus"
+                android:layout_toEndOf="@+id/icoStatus" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="15dp"
+            android:paddingLeft="25dp"
+            android:layout_below="@+id/containerStatus"
+            android:id="@+id/containerCheckbox">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:gravity="center_vertical"
+                android:text="Reconhece o estabelecimanto?"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:id="@+id/txtEstab"/>
+
+            <ToggleButton
+                android:layout_width="66dp"
+                android:layout_height="26dp"
+                android:id="@+id/switchEstab"
+                android:background="@drawable/toggle_style"
+                android:textOn=""
+                android:textOff=""
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="15dp"
+            android:paddingLeft="25dp"
+            android:layout_marginTop="26dp"
+            android:layout_below="@+id/containerCheckbox"
+            android:id="@+id/containerCheckboxDois">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:gravity="center_vertical"
+                android:text="Esta com o cartão em mãos?"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:id="@+id/txtCartao" />
+
+            <ToggleButton
+                android:layout_width="66dp"
+                android:layout_height="26dp"
+                android:id="@+id/switchCartao"
+                android:background="@drawable/toggle_style"
+                android:textOn=""
+                android:textOff=""
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <!--<Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switchCartao"
+                android:textOn="sim"
+                android:textOff="não"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+            -->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="15dp"
+            android:paddingLeft="25dp"
+            android:layout_marginTop="22dp"
+            android:layout_below="@+id/containerCheckboxDois"
+            android:background="@drawable/grey_border_top"
+            android:id="@+id/containerHint">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="22dp"
+                android:textSize="16sp"
+                android:textColor="@color/hint"
+                android:hint="Nos conte em detalhes o que aconteceu com a sua compra em Apple Store..."
+                android:gravity="top"
+                android:background="@drawable/border_radius_white"
+                android:id="@+id/textHint" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:paddingRight="25dp"
+            android:paddingLeft="25dp"
+            android:id="@+id/containerButtons"
+            android:layout_above="@+id/containerHint"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textSize="20sp"
+                android:textColor="@color/close_gray"
+                android:background="@drawable/no_border_white"
+                android:id="@+id/btnCancelar"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contestar"
+                android:textSize="20sp"
+                android:textColor="@color/disabled_gray"
+                android:background="@drawable/no_border_white"
+                android:id="@+id/btnContestar"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -25,13 +25,7 @@ public class ChargeBack {
     private List<ReasonDetails> reason_details;
 
     @SerializedName("links")
-    private LinksResponseNotice links;
-
-    @SerializedName("unblock_card")
-    private LinksResponseNotice unblockcard;
-
-    @SerializedName("self")
-    private LinksResponseNotice self;
+    private LinksResponseChargeback links;
 
     public String getCommenthint() {
         return commenthint;
@@ -73,27 +67,12 @@ public class ChargeBack {
         this.reason_details = reason_details;
     }
 
-    public LinksResponseNotice getLinks() {
+    public LinksResponseChargeback getLinks() {
         return links;
     }
 
-    public void setLinks(LinksResponseNotice links) {
+    public void setLinks(LinksResponseChargeback links) {
         this.links = links;
     }
 
-    public LinksResponseNotice getUnblockcard() {
-        return unblockcard;
-    }
-
-    public void setUnblockcard(LinksResponseNotice unblockcard) {
-        this.unblockcard = unblockcard;
-    }
-
-    public LinksResponseNotice getSelf() {
-        return self;
-    }
-
-    public void setSelf(LinksResponseNotice self) {
-        this.self = self;
-    }
 }

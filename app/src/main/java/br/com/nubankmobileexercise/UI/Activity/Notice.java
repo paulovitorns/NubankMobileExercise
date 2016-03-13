@@ -15,7 +15,6 @@ import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;
 import br.com.nubankmobileexercise.R;
-import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentSuccess;
 import br.com.nubankmobileexercise.Util.Util;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -48,8 +47,7 @@ public class Notice extends AppCompatActivity {
         btnPrimary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                showSuccessDialog();
+                startActivity(new Intent(getApplicationContext(), Chargeback.class));
             }
         });
 
@@ -103,15 +101,4 @@ public class Notice extends AppCompatActivity {
         });
     }
 
-    public void showSuccessDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        DialogFragmentSuccess newFragment = new DialogFragmentSuccess();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
-        transaction.add(android.R.id.content, newFragment)
-                .addToBackStack(null).commit();
-    }
 }
