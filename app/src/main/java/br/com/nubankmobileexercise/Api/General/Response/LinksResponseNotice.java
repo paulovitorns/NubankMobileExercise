@@ -7,17 +7,16 @@ import java.util.List;
 /**
  * Created by Paulo on 10/03/2016.
  */
-public class LinksResponse {
+public class LinksResponseNotice {
 
     @SerializedName("links")
-    private List<Link> links;
+    private LinkNotice links;
 
-    public List<Link> getLinks() {
+    public LinkNotice getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(LinkNotice links) {
         this.links = links;
     }
-
 }

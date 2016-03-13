@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="#525252"
-    tools:context=".Notice">
+    android:gravity="center"
+    android:background="@color/backgroundGray"
+    tools:context=".DialogFragmentSuccess">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
+        android:layout_height="345dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
         android:background="@drawable/screen_border"
         android:id="@+id/container">
 
@@ -18,13 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingTop="20dp"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
+            android:paddingTop="26dp"
+            android:paddingRight="26dp"
+            android:paddingLeft="26dp"
             android:id="@+id/containerNotice">
 
-            <TextView android:text="Antes de Continuar"
-                android:id="@+id/txtTitleNotice"
+            <TextView android:text="Contestação de compra recebida"
+                android:id="@+id/txtTitleSuccess"
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:textColor="@color/purple"
@@ -32,45 +33,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"/>
 
-            <TextView android:text="Estamos com você nesta! Certifique-se dos pontos abaixo, são muito importantes:• Você pode procurar o nome do estabelecimento no Google. Diversas vezes encontramos informações valiosas por lá e elas podem te ajudar neste processo.• Caso você reconheça a compra, é muito importante pra nós que entre em contato com o estabelecimento e certifique-se que a situação já não foi resolvida."
-                android:id="@+id/txtNotice"
-                android:textSize="17sp"
+            <TextView android:text="Fique de olho no seu email! Nos próximos 3 dias você deverá receber um primeiro retorno sobre sua constentação."
+                android:id="@+id/txtSuccess"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_below="@+id/txtTitleNotice" />
+                android:layout_below="@+id/txtTitleSuccess" />
 
         </RelativeLayout>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:id="@+id/containerButtons"
+            android:layout_marginBottom="28dp"
             android:layout_alignParentBottom="true">
 
             <Button
-                android:id="@+id/btnPrimary"
-                android:text="continuar"
-                android:textColor="@color/purple"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/grey_border_top"
-                />
-
-            <Button
-                android:id="@+id/btnSecondary"
+                android:id="@+id/btnClose"
                 android:text="Fechar"
                 android:textColor="@color/close_gray"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/btnPrimary"
-                android:background="@drawable/grey_border_top"
+                android:layout_height="50dp"
+                android:background="@drawable/no_border_white"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

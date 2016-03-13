@@ -3,7 +3,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/backgroundGray"
     tools:context=".Notice">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/screen_border"
+        android:id="@+id/container">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:id="@+id/containerNotice">
+
+            <TextView android:text=""
+                android:id="@+id/txtTitleNotice"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:textColor="@color/purple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
+            <TextView android:text=""
+                android:id="@+id/txtNotice"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/txtTitleNotice" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/containerButtons"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btnPrimary"
+                android:text=""
+                android:textColor="@color/purple"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/grey_border_top"
+                />
+
+            <Button
+                android:id="@+id/btnSecondary"
+                android:text=""
+                android:textColor="@color/close_gray"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/btnPrimary"
+                android:background="@drawable/grey_border_top"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
