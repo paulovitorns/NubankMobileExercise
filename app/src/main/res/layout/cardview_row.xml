@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="15dp"
+        android:paddingLeft="25dp"
+        android:layout_below="@+id/containerStatus"
+        android:id="@+id/containerCheckbox">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:gravity="center_vertical"
+            android:text="Reconhece o estabelecimanto?"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:id="@+id/txtLabel"/>
+
+        <ToggleButton
+            android:layout_width="66dp"
+            android:layout_height="26dp"
+            android:id="@+id/toggleButon"
+            android:background="@drawable/toggle_style"
+            android:textOn=""
+            android:textOff=""
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

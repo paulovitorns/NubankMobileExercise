@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NubankMobileExercise</string>
+    <string name="unblock">Cartão desbloqueado, recomendamos mantê-lo bloqueado.</string>
+    <string name="block">Bloqueamos preventivamente o seu cartão</string>
 </resources>

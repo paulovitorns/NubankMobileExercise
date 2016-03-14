@@ -1,5 +1,6 @@
 package br.com.nubankmobileexercise.UI.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.com.nubankmobileexercise.Api.General.LinksRepo;
+import br.com.nubankmobileexercise.Api.General.Response.ChargeBack;
 import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;
@@ -21,6 +23,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class Notice extends AppCompatActivity {
+
+    private ProgressDialog progressDialog;
 
     private LinksResponseNotice linksNotice;
     private br.com.nubankmobileexercise.Api.General.Response.Notice notice;
@@ -42,12 +46,18 @@ public class Notice extends AppCompatActivity {
         txtTitleNotice = (TextView) findViewById(R.id.txtTitleNotice);
         txtNotice = (TextView) findViewById(R.id.txtNotice);
 
-        this.loadLinkNotice();
+        loadLinkNotice();
 
         btnPrimary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Chargeback.class));
+
+                Intent i = new Intent(getApplicationContext(), Chargeback.class);
+                String[] noticeUrlArray = Util.explode(notice.getLinks().getChargeback().getHref());
+                String chargeback = noticeUrlArray[noticeUrlArray.length-1].toString();
+
+                i.putExtra("chargeback", chargeback);
+                startActivity(i);
             }
         });
 
@@ -62,6 +72,8 @@ public class Notice extends AppCompatActivity {
 
     private void loadLinkNotice(){
 
+        progressDialog = ProgressDialog.show(Notice.this, "Carregando...", "", true, true);
+
         linksRepo.getLinkNotice(new Callback<LinksResponseNotice>() {
 
             @Override
@@ -73,6 +85,7 @@ public class Notice extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
+                progressDialog.dismiss();
             }
         });
     }
@@ -92,11 +105,14 @@ public class Notice extends AppCompatActivity {
 
                 btnPrimary.setText(notice.getPrimary_action().getTitle());
                 btnSecondary.setText(notice.getSecondary_action().getTitle());
+
+                progressDialog.dismiss();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
+                progressDialog.dismiss();
             }
         });
     }

@@ -20,7 +20,7 @@ public class Notice {
     private Action secondary_action;
 
     @SerializedName("links")
-    private LinksResponseChargeback links;
+    private LinkChargeback links;
 
     public String getTitle() {
         return title;
@@ -54,11 +54,11 @@ public class Notice {
         this.secondary_action = secondary_action;
     }
 
-    public LinksResponseChargeback getLinks() {
+    public LinkChargeback getLinks() {
         return links;
     }
 
-    public void setLinks(LinksResponseChargeback links) {
+    public void setLinks(LinkChargeback links) {
         this.links = links;
     }
 }
