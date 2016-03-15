@@ -2,7 +2,6 @@ package br.com.nubankmobileexercise.UI.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +11,20 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.nubankmobileexercise.Adapter.CardViewReasonDetails;
 import br.com.nubankmobileexercise.Api.General.LinksRepo;
-import br.com.nubankmobileexercise.Api.General.Response.ChargeBack;
-import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
+import br.com.nubankmobileexercise.Api.General.Request.ChargebackRequest;
+import br.com.nubankmobileexercise.Api.General.Response.ChargeBackResponse;
 import br.com.nubankmobileexercise.Api.General.Response.MessageResponse;
 import br.com.nubankmobileexercise.Api.General.Response.ReasonDetails;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
@@ -50,7 +48,8 @@ public class Chargeback extends AppCompatActivity {
     private TextView txtStatus;
     private EditText textHint;
 
-    private ChargeBack chargeBack;
+    private ChargeBackResponse chargeBackResponse;
+    private ChargebackRequest chargebackRequest;
 
     private List<ReasonDetails> details;
 
@@ -74,54 +73,45 @@ public class Chargeback extends AppCompatActivity {
         txtStatus       = (TextView) findViewById(R.id.txtStatus);
         textHint        = (EditText) findViewById(R.id.textHint);
 
+        chargebackRequest = new ChargebackRequest();
+        chargeBackResponse = null;
+
         icoStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String action = null;
 
-                if(chargeBack.isAutoblock()){
-                    String[] noticeUrlArray = Util.explode(chargeBack.getLinks().getUnblockcard().getHref());
+                if(chargeBackResponse.isAutoblock()){
+                    String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getUnblockcard().getHref());
                     action = noticeUrlArray[noticeUrlArray.length-1].toString();
                 }else{
-                    String[] noticeUrlArray = Util.explode(chargeBack.getLinks().getBlockcard().getHref());
+                    String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getBlockcard().getHref());
                     action = noticeUrlArray[noticeUrlArray.length-1].toString();
                 }
                 postAction(action);
             }
         });
 
-        /*
-        switchCartao.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    txtCartao.setTextColor(getResources().getColor(R.color.green));
-                    System.out.println("Cartão em mãos: true");
-                }else {
-                    txtCartao.setTextColor(getResources().getColor(R.color.black));
-                    System.out.println("Cartão em mãos: false");
-                }
-            }
-        });
-        switchEstab.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    txtEstab.setTextColor(getResources().getColor(R.color.green));
-                    System.out.println("Conhece o estabelecimento: true");
-                }else {
-                    txtEstab.setTextColor(getResources().getColor(R.color.black));
-                    System.out.println("Conhece o estabelecimento: false");
-                }
-            }
-        });
-        */
 
         btnContestar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSuccessDialog();
+
+
+                if(!textHint.getText().toString().equals("")){
+                    Gson gson = new Gson();
+                    chargebackRequest.setComment(textHint.getText().toString());
+                    String json = gson.toJson(chargebackRequest);
+
+                    System.out.println("Aqui: "+json.toString());
+
+                    postChargeBack(json.toString());
+                    showSuccessDialog();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Por favor, informe mais detalhes sobre a sua compra", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -148,7 +138,6 @@ public class Chargeback extends AppCompatActivity {
                 mLayoutManager = new LinearLayoutManager(this);
                 mRecyclerView.setLayoutManager(mLayoutManager);
 
-
             }
         }
 
@@ -158,23 +147,30 @@ public class Chargeback extends AppCompatActivity {
 
         progressDialog = ProgressDialog.show(Chargeback.this, "Carregando...", "", true, true);
 
-        linksRepo.getChargeback(chargebackUrl, new Callback<ChargeBack>() {
+        linksRepo.getChargeback(chargebackUrl, new Callback<ChargeBackResponse>() {
 
             @Override
-            public void success(ChargeBack chargeBackResponse, Response response) {
-                chargeBack = chargeBackResponse;
-                txtTitle.setText(chargeBack.getTitle());
+            public void success(ChargeBackResponse chargeback, Response response) {
+                chargeBackResponse = chargeback;
 
+                txtTitle.setText(chargeBackResponse.getTitle());
                 checkBlockCard();
 
-                textHint.setHint(Html.fromHtml(chargeBack.getCommenthint()));
+                if(chargeBackResponse.isAutoblock()){
+                    String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getBlockcard().getHref());
+                    String action = noticeUrlArray[noticeUrlArray.length-1].toString();
+                    postAction(action);
+                }
+
+
+                textHint.setHint(Html.fromHtml(chargeBackResponse.getCommenthint()));
 
                 if (chargeBackResponse != null && chargeBackResponse.getReason_details().size() > 0) {
                     for (ReasonDetails r : chargeBackResponse.getReason_details()) {
                         details.add(r);
                     }
 
-                    mAdapter = new CardViewReasonDetails(details);
+                    mAdapter = new CardViewReasonDetails(details, chargebackRequest, chargeBackResponse);
                     mRecyclerView.setAdapter(mAdapter);
 
                 }
@@ -199,11 +195,15 @@ public class Chargeback extends AppCompatActivity {
             public void success(MessageResponse messageResponse, Response response) {
                 if (messageResponse.getStatus().equalsIgnoreCase("Ok")) {
                     if (actionUrl.equals("card_unblock")) {
-                        chargeBack.setAutoblock(false);
+                        chargeBackResponse.setAutoblock(false);
                     } else {
-                        chargeBack.setAutoblock(true);
+                        chargeBackResponse.setAutoblock(true);
                     }
                     checkBlockCard();
+
+                    //Seto novamente os toggleButton para o status atual do cartão.
+                    mAdapter = new CardViewReasonDetails(details, chargebackRequest, chargeBackResponse);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
             }
 
@@ -215,10 +215,31 @@ public class Chargeback extends AppCompatActivity {
         });
     }
 
+    private void postChargeBack(String json) {
+
+        String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getSelf().getHref());
+        String action = noticeUrlArray[noticeUrlArray.length-1].toString();
+
+        linksRepo.postChargeBack(action, json, new Callback<MessageResponse>() {
+
+            @Override
+            public void success(MessageResponse messageResponse, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println(error.toString());
+
+            }
+        });
+    }
+
     private void checkBlockCard(){
-        if(chargeBack.isAutoblock()){
+        if(chargeBackResponse.isAutoblock()){
             icoStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_chargeback_lock));
             txtStatus.setText(getResources().getString(R.string.block));
+
         }else{
             icoStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_chargeback_unlock));
             txtStatus.setText(getResources().getString(R.string.unblock));

@@ -57,6 +57,7 @@
                 android:textColor="@color/purple"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:textStyle="bold"
                 android:background="@drawable/grey_border_top"
                 />
 
@@ -64,6 +65,7 @@
                 android:id="@+id/btnSecondary"
                 android:text=""
                 android:textColor="@color/close_gray"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/btnPrimary"

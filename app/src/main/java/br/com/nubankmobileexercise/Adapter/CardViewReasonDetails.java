@@ -9,8 +9,12 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.com.nubankmobileexercise.Api.General.Request.ChargebackRequest;
+import br.com.nubankmobileexercise.Api.General.Request.ReasonDetailsRequest;
+import br.com.nubankmobileexercise.Api.General.Response.ChargeBackResponse;
 import br.com.nubankmobileexercise.Api.General.Response.ReasonDetails;
 import br.com.nubankmobileexercise.R;
 
@@ -19,14 +23,23 @@ import br.com.nubankmobileexercise.R;
  */
 public class CardViewReasonDetails extends RecyclerView.Adapter<CardViewReasonDetails.ViewHolder> {
 
+    private ChargebackRequest chargebackRequest;
+    private ChargeBackResponse chargeback;
+    private List<ReasonDetailsRequest> reasonDetailsRequests;
     private List<ReasonDetails> detailsList;
 
     public List<ReasonDetails> getDetailsList() {
         return detailsList;
     }
 
-    public CardViewReasonDetails(List<ReasonDetails> reasonDetailses){
+    public CardViewReasonDetails(List<ReasonDetails> reasonDetailses,
+                                 ChargebackRequest chargebackRequest,
+                                 ChargeBackResponse chargeBackResponse){
         this.detailsList = reasonDetailses;
+        this.chargebackRequest = chargebackRequest;
+        this.chargeback = chargeBackResponse;
+
+        reasonDetailsRequests = new ArrayList<>();
     }
 
     @Override
@@ -38,20 +51,61 @@ public class CardViewReasonDetails extends RecyclerView.Adapter<CardViewReasonDe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final int pos = position;
+        ReasonDetailsRequest reasonInit = new ReasonDetailsRequest();
 
-        holder.txtLabel.setText(detailsList.get(pos).getTitle());
+        ReasonDetails detail = detailsList.get(pos);
 
+        holder.txtLabel.setText(detail.getTitle());
+
+        holder.toggleButon.setTextOn(detail.getId());
+        holder.toggleButon.setTextOff(detail.getId());
+
+        //Insiro valores default na lista
+        reasonInit.setId(detail.getId());
+
+        if(!chargeback.isAutoblock()){
+            holder.txtLabel.setTextColor(Color.parseColor("#222222"));
+            holder.toggleButon.setChecked(false);
+            reasonInit.setResponse(false);
+        }else{
+            holder.txtLabel.setTextColor(Color.parseColor("#417505"));
+            holder.toggleButon.setChecked(true);
+            reasonInit.setResponse(true);
+        }
+
+        reasonDetailsRequests.add(reasonInit);
+        chargebackRequest.setReason_details(reasonDetailsRequests);
+
+        //Pego as opções caso o cliente escolha entre verdadeiro ou falso
         holder.toggleButon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                String idReasonDetails = holder.toggleButon.getTextOn().toString();
+                ReasonDetailsRequest reason = new ReasonDetailsRequest();
+
                 if (isChecked) {
                     holder.txtLabel.setTextColor(Color.parseColor("#417505"));
-                    System.out.println("Cartão em mãos: true");
+                    System.out.println(idReasonDetails + ": " + isChecked);
                 }else {
                     holder.txtLabel.setTextColor(Color.parseColor("#222222"));
-                    System.out.println("Cartão em mãos: false");
+                    System.out.println(idReasonDetails + ": " + isChecked);
                 }
+                reason.setId(idReasonDetails);
+                reason.setResponse(isChecked);
+
+                if(reasonDetailsRequests.size() > 0){
+                    for (int i = 0; i < reasonDetailsRequests.size(); i++) {
+                        if(reasonDetailsRequests.get(i).getId().equals(reason.getId())) {
+                            reasonDetailsRequests.remove(i);
+                        }
+                    }
+                    reasonDetailsRequests.add(reason);
+                }else{
+                    reasonDetailsRequests.add(reason);
+                }
+
+                chargebackRequest.setReason_details(reasonDetailsRequests);
 
             }
         });
@@ -59,7 +113,7 @@ public class CardViewReasonDetails extends RecyclerView.Adapter<CardViewReasonDe
 
     @Override
     public int getItemCount() {
-        return 0;
+        return detailsList != null ? detailsList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

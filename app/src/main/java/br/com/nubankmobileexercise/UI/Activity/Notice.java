@@ -2,8 +2,6 @@ package br.com.nubankmobileexercise.UI.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.com.nubankmobileexercise.Api.General.LinksRepo;
-import br.com.nubankmobileexercise.Api.General.Response.ChargeBack;
 import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;

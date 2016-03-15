@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Paulo Vitor on 10/03/2016.
  */
-public class ChargeBack {
+public class ChargeBackResponse {
 
     @SerializedName("comment_hint")
     private String commenthint;

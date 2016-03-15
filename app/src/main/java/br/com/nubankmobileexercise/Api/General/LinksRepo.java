@@ -1,6 +1,6 @@
 package br.com.nubankmobileexercise.Api.General;
 
-import br.com.nubankmobileexercise.Api.General.Response.ChargeBack;
+import br.com.nubankmobileexercise.Api.General.Response.ChargeBackResponse;
 import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.Response.MessageResponse;
 import br.com.nubankmobileexercise.Api.General.Response.Notice;
@@ -23,10 +23,15 @@ public interface LinksRepo {
     void getNotice(@Path("url") String url, Callback<Notice> cb);
 
     @GET("/{chargeback}")
-    void getChargeback(@Path("chargeback") String chargeback, Callback<ChargeBack> cb);
+    void getChargeback(@Path("chargeback") String chargeback, Callback<ChargeBackResponse> cb);
 
     @FormUrlEncoded
     @POST("/{action}")
     void postAction(@Path("action") String action,  @Field("Field") String str, Callback<MessageResponse> cb);
+
+
+    @FormUrlEncoded
+    @POST("/{action}")
+    void postChargeBack(@Path("action") String action,  @Field("ChargebackRequest") String str, Callback<MessageResponse> cb);
 
 }
