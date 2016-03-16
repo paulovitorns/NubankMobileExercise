@@ -120,7 +120,7 @@
             android:paddingRight="25dp"
             android:paddingLeft="25dp"
             android:id="@+id/containerButtons"
-            android:layout_above="@+id/containerHint"
+            android:layout_below="@+id/containerHint"
             android:layout_alignParentBottom="true">
 
             <Button

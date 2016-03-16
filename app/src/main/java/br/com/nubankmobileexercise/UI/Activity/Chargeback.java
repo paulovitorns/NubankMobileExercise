@@ -30,6 +30,7 @@ import br.com.nubankmobileexercise.Api.General.Response.ReasonDetails;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;
 import br.com.nubankmobileexercise.R;
+import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentNotConnected;
 import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentSuccess;
 import br.com.nubankmobileexercise.Util.Util;
 import retrofit.Callback;
@@ -65,6 +66,10 @@ public class Chargeback extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chargeback);
 
+        if(!Util.isNetworkAvailable()){
+            showNotConnectedDialog();
+        }
+
         btnContestar    = (Button) findViewById(R.id.btnContestar);
         btnCancelar     = (Button) findViewById(R.id.btnCancelar);
 
@@ -83,9 +88,11 @@ public class Chargeback extends AppCompatActivity {
                 String action = null;
 
                 if(chargeBackResponse.isAutoblock()){
+                    progressDialog = ProgressDialog.show(Chargeback.this, "Desbloqueio de cartão", "Estamos processando a sua requisição", true, true);
                     String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getUnblockcard().getHref());
                     action = noticeUrlArray[noticeUrlArray.length-1].toString();
                 }else{
+                    progressDialog = ProgressDialog.show(Chargeback.this, "Bloqueio de cartão", "Estamos processando a sua requisição", true, true);
                     String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getBlockcard().getHref());
                     action = noticeUrlArray[noticeUrlArray.length-1].toString();
                 }
@@ -100,14 +107,9 @@ public class Chargeback extends AppCompatActivity {
 
 
                 if(!textHint.getText().toString().equals("")){
-                    Gson gson = new Gson();
                     chargebackRequest.setComment(textHint.getText().toString());
-                    String json = gson.toJson(chargebackRequest);
 
-                    System.out.println("Aqui: "+json.toString());
-
-                    postChargeBack(json.toString());
-                    showSuccessDialog();
+                    postChargeBack(chargebackRequest);
                 }else{
                     Toast.makeText(getApplicationContext(), "Por favor, informe mais detalhes sobre a sua compra", Toast.LENGTH_SHORT).show();
                 }
@@ -145,7 +147,7 @@ public class Chargeback extends AppCompatActivity {
 
     private void loadChargeback(String chargebackUrl){
 
-        progressDialog = ProgressDialog.show(Chargeback.this, "Carregando...", "", true, true);
+        progressDialog = ProgressDialog.show(Chargeback.this, "Carregando...", "Estamos carregando a sua tela de contestação", true, true);
 
         linksRepo.getChargeback(chargebackUrl, new Callback<ChargeBackResponse>() {
 
@@ -156,9 +158,9 @@ public class Chargeback extends AppCompatActivity {
                 txtTitle.setText(chargeBackResponse.getTitle());
                 checkBlockCard();
 
-                if(chargeBackResponse.isAutoblock()){
+                if (chargeBackResponse.isAutoblock()) {
                     String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getBlockcard().getHref());
-                    String action = noticeUrlArray[noticeUrlArray.length-1].toString();
+                    String action = noticeUrlArray[noticeUrlArray.length - 1].toString();
                     postAction(action);
                 }
 
@@ -186,7 +188,6 @@ public class Chargeback extends AppCompatActivity {
         });
     }
 
-
     private void postAction(final String actionUrl) {
 
         linksRepo.postAction(actionUrl, "", new Callback<MessageResponse>() {
@@ -205,32 +206,45 @@ public class Chargeback extends AppCompatActivity {
                     mAdapter = new CardViewReasonDetails(details, chargebackRequest, chargeBackResponse);
                     mRecyclerView.setAdapter(mAdapter);
                 }
+
+                progressDialog.dismiss();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
 
+                progressDialog.dismiss();
             }
         });
     }
 
-    private void postChargeBack(String json) {
+    private void postChargeBack(ChargebackRequest chargerequest) {
+
+        progressDialog = ProgressDialog.show(Chargeback.this, "Enviando contestação", "", true, true);
 
         String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getSelf().getHref());
         String action = noticeUrlArray[noticeUrlArray.length-1].toString();
 
-        linksRepo.postChargeBack(action, json, new Callback<MessageResponse>() {
+        linksRepo.postChargeBack(action, chargerequest, new Callback<MessageResponse>() {
 
             @Override
             public void success(MessageResponse messageResponse, Response response) {
+                if (messageResponse.getStatus().equalsIgnoreCase("Ok")) {
+                    showSuccessDialog();
+                }
 
+                progressDialog.dismiss();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
+                if(error.getResponse().getReason() != null){
+                    Toast.makeText(Chargeback.this, "Você precisa detalhar o que aconteceu com a sua compra.", Toast.LENGTH_LONG).show();
+                }
 
+                progressDialog.dismiss();
             }
         });
     }
@@ -249,6 +263,19 @@ public class Chargeback extends AppCompatActivity {
     public void showSuccessDialog() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         DialogFragmentSuccess newFragment = new DialogFragmentSuccess();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        transaction.add(android.R.id.content, newFragment)
+                .addToBackStack(null).commit();
+    }
+
+
+    public void showNotConnectedDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogFragmentNotConnected newFragment = new DialogFragmentNotConnected();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 

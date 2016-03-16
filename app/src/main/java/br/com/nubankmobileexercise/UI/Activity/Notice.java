@@ -1,19 +1,27 @@
 package br.com.nubankmobileexercise.UI.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import br.com.nubankmobileexercise.Api.General.LinksRepo;
 import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;
 import br.com.nubankmobileexercise.R;
+import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentNotConnected;
+import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentSuccess;
 import br.com.nubankmobileexercise.Util.Util;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -37,6 +45,9 @@ public class Notice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
+        if(!Util.isNetworkAvailable()){
+            showNotConnectedDialog();
+        }
 
         btnPrimary = (Button) findViewById(R.id.btnPrimary);
         btnSecondary = (Button) findViewById(R.id.btnSecondary);
@@ -69,7 +80,7 @@ public class Notice extends AppCompatActivity {
 
     private void loadLinkNotice(){
 
-        progressDialog = ProgressDialog.show(Notice.this, "Carregando...", "", true, true);
+        progressDialog = ProgressDialog.show(Notice.this, "Notificação", "Carregando detalhes da sua notificação", true, true);
 
         linksRepo.getLinkNotice(new Callback<LinksResponseNotice>() {
 
@@ -109,9 +120,23 @@ public class Notice extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.toString());
+                Toast.makeText(Notice.this, "Não foi possível carregar a sua notificação neste momento.", Toast.LENGTH_LONG).show();
+
+                finish();
                 progressDialog.dismiss();
             }
         });
     }
 
+    public void showNotConnectedDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogFragmentNotConnected newFragment = new DialogFragmentNotConnected();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        transaction.add(android.R.id.content, newFragment)
+                .addToBackStack(null).commit();
+    }
 }

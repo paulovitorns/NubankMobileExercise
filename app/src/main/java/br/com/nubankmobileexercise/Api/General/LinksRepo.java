@@ -1,10 +1,12 @@
 package br.com.nubankmobileexercise.Api.General;
 
+import br.com.nubankmobileexercise.Api.General.Request.ChargebackRequest;
 import br.com.nubankmobileexercise.Api.General.Response.ChargeBackResponse;
 import br.com.nubankmobileexercise.Api.General.Response.LinksResponseNotice;
 import br.com.nubankmobileexercise.Api.General.Response.MessageResponse;
 import br.com.nubankmobileexercise.Api.General.Response.Notice;
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -29,9 +31,7 @@ public interface LinksRepo {
     @POST("/{action}")
     void postAction(@Path("action") String action,  @Field("Field") String str, Callback<MessageResponse> cb);
 
-
-    @FormUrlEncoded
     @POST("/{action}")
-    void postChargeBack(@Path("action") String action,  @Field("ChargebackRequest") String str, Callback<MessageResponse> cb);
+    void postChargeBack(@Path("action") String action,  @Body ChargebackRequest chargebackRequest, Callback<MessageResponse> cb);
 
 }
