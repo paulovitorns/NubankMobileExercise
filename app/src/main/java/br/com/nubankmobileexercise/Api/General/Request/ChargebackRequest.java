@@ -18,6 +18,20 @@ public class ChargebackRequest {
     @SerializedName("reason_details")
     private List<ReasonDetailsRequest> reason_details;
 
+    public ChargebackRequest(){
+
+    }
+
+    public ChargebackRequest(String comment, List<ReasonDetailsRequest> reason_details){
+
+        if( ( comment.equals("") || comment == null ) || ( reason_details == null ) )
+            throw new IllegalArgumentException("O comentário e os detalhes não podem ser nulos.");
+
+        this.comment        = comment;
+        this.reason_details = reason_details;
+
+    }
+
     public String getComment() {
         return comment;
     }

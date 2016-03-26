@@ -12,6 +12,18 @@ public class ReasonDetailsRequest {
     @SerializedName("response")
     private boolean response;
 
+    public ReasonDetailsRequest(){
+
+    }
+
+    public ReasonDetailsRequest(String id, boolean response){
+        if( id.equals("") || id == null )
+            throw new IllegalArgumentException("Objeto não pode ser nulo.");
+
+        this.id         = id;
+        this.response   = response;
+    }
+
     public String getId() {
         return id;
     }
