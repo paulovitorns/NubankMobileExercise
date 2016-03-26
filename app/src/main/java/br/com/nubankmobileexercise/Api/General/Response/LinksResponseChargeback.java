@@ -16,6 +16,19 @@ public class LinksResponseChargeback {
     @SerializedName("self")
     private Link self;
 
+    public LinksResponseChargeback(){
+
+    }
+
+    public LinksResponseChargeback(Link blockcard, Link unblockcard, Link self){
+        if(blockcard == null || unblockcard == null || self == null)
+            throw new IllegalArgumentException("Os links de ações não podem ser nulos");
+
+        this.blockcard = blockcard;
+        this.unblockcard = unblockcard;
+        this.self = self;
+    }
+
     public Link getBlockcard() {
         return blockcard;
     }

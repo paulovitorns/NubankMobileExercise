@@ -13,6 +13,19 @@ public class ReasonDetails {
     @SerializedName("title")
     private String title;
 
+    public ReasonDetails(){
+
+    }
+
+    public ReasonDetails(String id, String title){
+
+        if((id.equals("") || id == null) || (title.equals("") || title == null) )
+            throw new IllegalArgumentException("O id e título não podem ser vazios ou nulos.");
+
+        this.id = id;
+        this.title = title;
+    }
+
     public String getId() {
         return id;
     }

@@ -1,10 +1,7 @@
 package br.com.nubankmobileexercise.UI.Activity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +18,6 @@ import br.com.nubankmobileexercise.Api.General.ServiceGenerator;
 import br.com.nubankmobileexercise.BuildConfig;
 import br.com.nubankmobileexercise.R;
 import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentNotConnected;
-import br.com.nubankmobileexercise.UI.Fragment.DialogFragmentSuccess;
 import br.com.nubankmobileexercise.Util.Util;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -103,29 +99,37 @@ public class Notice extends AppCompatActivity {
         String[] noticeUrlArray = Util.explode(linksNotice.getLinks().getNotice().getHref());
         String noticeUrl = noticeUrlArray[noticeUrlArray.length-1].toString();
 
-        linksRepo.getNotice(noticeUrl, new Callback<br.com.nubankmobileexercise.Api.General.Response.Notice>() {
+        if(linksNotice.getLinks().getNotice().isValidUrl()){
 
-            @Override
-            public void success(br.com.nubankmobileexercise.Api.General.Response.Notice noticeResponse, Response response) {
-                notice = noticeResponse;
-                txtTitleNotice.setText(notice.getTitle());
-                txtNotice.setText(Html.fromHtml(notice.getDescription()));
+            linksRepo.getNotice(noticeUrl, new Callback<br.com.nubankmobileexercise.Api.General.Response.Notice>() {
 
-                btnPrimary.setText(notice.getPrimary_action().getTitle());
-                btnSecondary.setText(notice.getSecondary_action().getTitle());
+                @Override
+                public void success(br.com.nubankmobileexercise.Api.General.Response.Notice noticeResponse, Response response) {
+                    notice = noticeResponse;
+                    txtTitleNotice.setText(notice.getTitle());
+                    txtNotice.setText(Html.fromHtml(notice.getDescription()));
 
-                progressDialog.dismiss();
-            }
+                    btnPrimary.setText(notice.getPrimary_action().getTitle());
+                    btnSecondary.setText(notice.getSecondary_action().getTitle());
 
-            @Override
-            public void failure(RetrofitError error) {
-                System.out.println(error.toString());
-                Toast.makeText(Notice.this, "Não foi possível carregar a sua notificação neste momento.", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                }
 
-                finish();
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    System.out.println(error.toString());
+                    Toast.makeText(Notice.this, "Não foi possível carregar a sua notificação neste momento.", Toast.LENGTH_LONG).show();
+
+                    finish();
+                    progressDialog.dismiss();
+                }
+            });
+
+        }else{
+
+            Toast.makeText(Notice.this, "Ocorreu um erro ao tentar carregar a notificação. URL inválida.", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void showNotConnectedDialog() {

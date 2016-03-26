@@ -96,7 +96,13 @@ public class Chargeback extends AppCompatActivity {
                     String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getBlockcard().getHref());
                     action = noticeUrlArray[noticeUrlArray.length-1].toString();
                 }
-                postAction(action);
+
+                if(chargeBackResponse.getLinks().getUnblockcard().isValidUrl() && chargeBackResponse.getLinks().getBlockcard().isValidUrl() ){
+                    postAction(action);
+                }else{
+                    Toast.makeText(Chargeback.this, "Ocorreu um erro ao tentar carregar a notificação. URL inválida.", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -226,27 +232,33 @@ public class Chargeback extends AppCompatActivity {
         String[] noticeUrlArray = Util.explode(chargeBackResponse.getLinks().getSelf().getHref());
         String action = noticeUrlArray[noticeUrlArray.length-1].toString();
 
-        linksRepo.postChargeBack(action, chargerequest, new Callback<MessageResponse>() {
+        if(chargeBackResponse.getLinks().getSelf().isValidUrl()){
 
-            @Override
-            public void success(MessageResponse messageResponse, Response response) {
-                if (messageResponse.getStatus().equalsIgnoreCase("Ok")) {
-                    showSuccessDialog();
+            linksRepo.postChargeBack(action, chargerequest, new Callback<MessageResponse>() {
+
+                @Override
+                public void success(MessageResponse messageResponse, Response response) {
+                    if (messageResponse.getStatus().equalsIgnoreCase("Ok")) {
+                        showSuccessDialog();
+                    }
+
+                    progressDialog.dismiss();
                 }
 
-                progressDialog.dismiss();
-            }
+                @Override
+                public void failure(RetrofitError error) {
+                    System.out.println(error.toString());
+                    if(error.getResponse().getReason() != null){
+                        Toast.makeText(Chargeback.this, "Você precisa detalhar o que aconteceu com a sua compra.", Toast.LENGTH_LONG).show();
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                System.out.println(error.toString());
-                if(error.getResponse().getReason() != null){
-                    Toast.makeText(Chargeback.this, "Você precisa detalhar o que aconteceu com a sua compra.", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
                 }
+            });
+        }else{
 
-                progressDialog.dismiss();
-            }
-        });
+        }
+
     }
 
     private void checkBlockCard(){

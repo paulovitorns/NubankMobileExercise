@@ -27,6 +27,27 @@ public class ChargeBackResponse {
     @SerializedName("links")
     private LinksResponseChargeback links;
 
+    public ChargeBackResponse(){
+
+    }
+
+    public ChargeBackResponse(String commenthint, String id, String title, boolean autoblock, List<ReasonDetails> reason_details, LinksResponseChargeback links){
+
+        if(reason_details == null)
+            throw new IllegalArgumentException("Não encontramos nenhum detalhe");
+
+        if(links == null)
+            throw new IllegalArgumentException("Não encontramos os links de ação");
+
+        this.commenthint = commenthint;
+        this.id = id;
+        this.title = title;
+        this.autoblock = autoblock;
+        this.reason_details = reason_details;
+        this.links = links;
+
+    }
+
     public String getCommenthint() {
         return commenthint;
     }
